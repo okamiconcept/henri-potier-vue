@@ -88,9 +88,8 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { mapState } from 'vuex';
-import { Order, OrderItem } from '../OrderModel';
-import { OrderModule } from '@/OrderModule';
+import { Order, OrderItem } from '@/store/OrderModel';
+import { OrderModule } from '@/store/OrderModule';
 
 @Component
 export default class Cart extends Vue {

@@ -1,6 +1,7 @@
 import { Action, getModule, Module, Mutation, VuexModule } from 'vuex-module-decorators';
 import { OrderItem } from './OrderModel';
 import { CommercialOffer, Product } from './ProductModel';
+import { fetchCommercialOffers } from './ProductsApi';
 import store from './store';
 
 export interface OrderState {
@@ -26,7 +27,7 @@ class Order extends VuexModule implements OrderState {
     this.total = this.items.reduce((value, item) => value + item.quantity * item.product.price, 0);
   }
 
-  @Action({ rawError: true })
+  @Action
   public addProductToOrder(value: { product: Product; quantity: number }) {
     const items = [...this.items];
 
@@ -42,6 +43,8 @@ class Order extends VuexModule implements OrderState {
     }
 
     this.setItems(items);
+
+    this.getReduction();
   }
 
   @Action
@@ -51,6 +54,8 @@ class Order extends VuexModule implements OrderState {
     items = items.filter((oi) => oi.id !== orderItem.id);
 
     this.setItems(items);
+
+    this.getReduction();
   }
 
   @Action
@@ -68,27 +73,43 @@ class Order extends VuexModule implements OrderState {
     }
 
     this.setItems(items);
+
+    this.getReduction();
   }
 
-  private calculateReductionForOffer(order: Order, offer: CommercialOffer) {
-    switch (offer.type) {
-      case 'percentage': {
-        return order.total * (offer.value / 100);
-      }
-      case 'minus': {
-        return offer.value;
-      }
-      case 'slice': {
-        const nbSlice = Math.floor(order.total / offer.sliceValue);
-        return nbSlice * offer.value;
-      }
-    }
+  @Mutation
+  public setReduction(reduction: { offer: CommercialOffer; amount: number }) {
+    this.reduction = reduction;
   }
 
-  private calculateBestReduction(order: Order, offers: CommercialOffer[]) {
-    return offers
-      .map((offer) => ({ offer, amount: this.calculateReductionForOffer(order, offer) }))
-      .sort((a, b) => (a.amount < b.amount ? 1 : -1))[0];
+  @Action
+  public async getReduction() {
+    const data = await fetchCommercialOffers(this.items.map((item) => item.product.isbn));
+
+    const calculateReductionForOffer = (offer: CommercialOffer) => {
+      switch (offer.type) {
+        case 'percentage': {
+          return this.total * (offer.value / 100);
+        }
+        case 'minus': {
+          return offer.value;
+        }
+        case 'slice': {
+          const nbSlice = Math.floor(this.total / offer.sliceValue);
+          return nbSlice * offer.value;
+        }
+      }
+    };
+
+    const calculateBestReduction = (offers: CommercialOffer[]) => {
+      return offers
+        .map((offer) => ({ offer, amount: calculateReductionForOffer(offer) }))
+        .sort((a, b) => (a.amount < b.amount ? 1 : -1))[0];
+    };
+
+    const bestReduction = calculateBestReduction(data);
+
+    this.setReduction(bestReduction);
   }
 }
 

@@ -32,7 +32,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { ProductsModule } from '@/ProductsModule';
+import { ProductsModule } from '@/store/ProductsModule';
 import ProductItem from '../components/Product.vue';
 
 @Component({
@@ -48,7 +48,9 @@ export default class Products extends Vue {
   public search: string = '';
 
   public get filteredProducts() {
-    return this.search ? ProductsModule.items.filter((item) => item.title.toLowerCase().includes(this.search.toLowerCase())) : ProductsModule.items;
+    return this.search
+      ? ProductsModule.items.filter((item) => item.title.toLowerCase().includes(this.search.toLowerCase()))
+      : ProductsModule.items;
   }
 
   private created() {

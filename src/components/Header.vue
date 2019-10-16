@@ -46,8 +46,8 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { mapState } from 'vuex';
-import { Order } from '../OrderModel';
-import { OrderModule } from '@/OrderModule';
+import { Order } from '@/store/OrderModel';
+import { OrderModule } from '@/store/OrderModule';
 
 @Component
 export default class Header extends Vue {

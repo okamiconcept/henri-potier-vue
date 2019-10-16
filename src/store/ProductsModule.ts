@@ -1,5 +1,6 @@
 import { Action, getModule, Module, Mutation, VuexModule } from 'vuex-module-decorators';
 import { Product } from './ProductModel';
+import { fetchProducts } from './ProductsApi';
 import store from './store';
 
 export interface ProductsState {
@@ -13,7 +14,6 @@ class Products extends VuexModule implements ProductsState {
   public count = 0;
   public loading = true;
   public items: Product[] = [];
-  private apiURL = 'http://henri-potier.xebia.fr';
 
   @Mutation
   public setLoading(value: boolean) {
@@ -28,10 +28,9 @@ class Products extends VuexModule implements ProductsState {
   @Action
   public async fetchProducts() {
     this.setLoading(true);
-    const route = '/books';
-    const response = await fetch(this.apiURL + route);
+    const products = await fetchProducts();
 
-    this.setItems(await response.json());
+    this.setItems(products);
     this.setLoading(false);
   }
 }

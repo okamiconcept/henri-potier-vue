@@ -32,9 +32,9 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { mapState } from 'vuex';
-import { Order } from '../OrderModel';
-import { OrderModule } from '@/OrderModule';
-import { Product } from '@/ProductModel';
+import { Order } from '@/store/OrderModel';
+import { OrderModule } from '@/store/OrderModule';
+import { Product } from '@/store/ProductModel';
 
 @Component
 export default class ProductItem extends Vue {
