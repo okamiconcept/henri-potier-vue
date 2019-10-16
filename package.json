@@ -1,12 +1,17 @@
 {
   "name": "henri-potier-vue",
+  "homepage": "https://okamiconcept.github.io/henri-potier-vue",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "predeploy": "yarn build",
+    "deploy": "gh-pages -d dist",
+    "build:analyze": "yarn build && yarn analyze",
+    "analyze": "source-map-explorer 'dist/*.js'"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.11.2",
@@ -32,6 +37,8 @@
     "sass-loader": "^8.0.0",
     "ts-jest": "^23.0.0",
     "typescript": "^3.4.3",
-    "vue-template-compiler": "^2.6.10"
+    "vue-template-compiler": "^2.6.10",
+    "source-map-explorer": "^2.1.0",
+    "gh-pages": "^2.1.1"
   }
 }
