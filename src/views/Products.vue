@@ -9,7 +9,6 @@
         <div class="field">
           <p class="control has-icons-left has-icons-right">
             <input class="input" type="text" placeholder="Search" v-model="search" />
-            {{ search }}
             <span class="icon is-small is-left">
               <i class="fas fa-search"></i>
             </span>
@@ -18,14 +17,14 @@
       </form>
     </div>
 
-    <div v-if="!loading" class="columns is-multiline">
+    <transition-group name="fade" v-if="!loading" class="columns is-multiline" tag="div">
       <ProductItem
-        class="column is-one-quarter"
+        class="column is-one-quarter fade-item"
         v-for="product in filteredProducts"
         v-bind:key="product.isbn"
         v-bind:product="product"
       ></ProductItem>
-    </div>
+    </transition-group>
     <div v-if="loading">Chargement en cours...</div>
   </section>
 </template>
@@ -59,3 +58,16 @@ export default class Products extends Vue {
 }
 </script>
 
+<style lang="scss" scoped>
+.fade-item {
+  backface-visibility: hidden;
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.25s ease-out;
+}
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
+</style>
