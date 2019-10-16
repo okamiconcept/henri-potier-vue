@@ -11,7 +11,7 @@
     "predeploy": "yarn build",
     "deploy": "gh-pages -d dist",
     "build:analyze": "yarn build && yarn analyze",
-    "analyze": "source-map-explorer 'dist/*.js'"
+    "analyze": "source-map-explorer 'dist/js/*.js'"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.11.2",
