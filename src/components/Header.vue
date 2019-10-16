@@ -27,7 +27,7 @@
             <div class="buttons">
               <router-link
                 class="button is-info badge has-badge-rounded has-badge-danger"
-                [attr.data-badge]="order.count"
+                v-bind:data-badge="this.count"
                 to="/cart"
               >
                 <span class="icon">
@@ -45,7 +45,14 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import { mapState } from 'vuex';
+import { Order } from '../OrderModel';
+import { OrderModule } from '@/OrderModule';
 
 @Component
-export default class Header extends Vue {}
+export default class Header extends Vue {
+  public get count() {
+    return OrderModule.count;
+  }
+}
 </script>

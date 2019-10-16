@@ -1,16 +1,13 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+import Vue from 'vue';
+import Vuex from 'vuex';
+import { OrderState } from './OrderModule';
+import { ProductsState } from './ProductsModule';
 
-Vue.use(Vuex)
+export interface IRootState {
+  order: OrderState;
+  products: ProductsState;
+}
 
-export default new Vuex.Store({
-  state: {
+Vue.use(Vuex);
 
-  },
-  mutations: {
-
-  },
-  actions: {
-
-  }
-})
+export default new Vuex.Store<IRootState>({});
