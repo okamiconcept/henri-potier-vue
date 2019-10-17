@@ -14,7 +14,16 @@ import Header from '@/components/Header.vue';
     Header
   }
 })
-export default class Home extends Vue {}
+export default class Home extends Vue {
+  public mounted() {
+    if (localStorage.getItem('hpv-order')) {
+      this.$store.replaceState({
+        ...this.$store.state,
+        order: JSON.parse(localStorage.getItem('hpv-order') as string)
+      });
+    }
+  }
+}
 </script>
 
 

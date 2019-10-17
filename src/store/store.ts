@@ -10,4 +10,10 @@ export interface IRootState {
 
 Vue.use(Vuex);
 
-export default new Vuex.Store<IRootState>({});
+const store = new Vuex.Store<IRootState>({});
+
+store.subscribe((mutation, state) => {
+  localStorage.setItem('hpv-order', JSON.stringify(state.order));
+});
+
+export default store;
